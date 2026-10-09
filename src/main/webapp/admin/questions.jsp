@@ -85,6 +85,13 @@
         <h3>
             <%= question.getQuestionText() %>
         </h3>
+        
+        <p>
+            <strong>
+        Difficulty:
+            </strong>
+         <%= question.getDifficulty() %>
+        </p>
 
         <p>
             A. <%= question.getOptionA() %>

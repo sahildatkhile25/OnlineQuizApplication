@@ -89,6 +89,11 @@ public class EditQuestionServlet extends HttpServlet {
         String correctAnswer =
                 request.getParameter("correctAnswer");
 
+        String difficulty =
+        request.getParameter("difficulty");
+
+        
+
 
         if (questionText == null ||
                 optionA == null ||
@@ -136,12 +141,16 @@ public class EditQuestionServlet extends HttpServlet {
         );
 
         question.setOptionD(
-                optionD.trim()
+                optionD.trim() 
         );
 
         question.setCorrectAnswer(
                 correctAnswer
         );
+
+        question.setDifficulty(
+        difficulty
+);      
 
 
         QuestionDAO questionDAO =

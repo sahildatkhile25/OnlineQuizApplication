@@ -63,6 +63,19 @@ public class AddQuestionServlet extends HttpServlet {
         String correctAnswer =
                 request.getParameter("correctAnswer");
 
+        String difficulty =
+        request.getParameter("difficulty");
+
+        if (difficulty == null ||
+                difficulty.trim().isEmpty()) {
+                        response.sendRedirect(
+                                "add-question?quizId="
+                                + quizId
+                                + "&error=difficulty"
+                        );                                      
+                        return;
+                        }
+
 
         if (questionText == null ||
                 optionA == null ||
@@ -111,9 +124,13 @@ public class AddQuestionServlet extends HttpServlet {
                 optionD.trim()
         );
 
-        question.setCorrectAnswer(
+        question.setCorrectAnswer(      
                 correctAnswer
         );
+
+        question.setDifficulty(
+        difficulty
+);
 
 
         QuestionDAO questionDAO =
@@ -139,4 +156,6 @@ public class AddQuestionServlet extends HttpServlet {
             );
         }
     }
+
+    
 }

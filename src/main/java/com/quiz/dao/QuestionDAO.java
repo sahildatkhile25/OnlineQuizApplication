@@ -17,7 +17,7 @@ public class QuestionDAO {
         List<Question> questions = new ArrayList<>();
 
         String sql =
-                "SELECT * FROM questions WHERE quiz_id = ? ORDER BY id";
+        "SELECT * FROM questions WHERE quiz_id = ? ORDER BY RAND()";
 
         try (
                 Connection connection =
@@ -62,6 +62,10 @@ public class QuestionDAO {
                 question.setCorrectAnswer(
                         result.getString("correct_answer")
                 );
+                question.setDifficulty(
+                        result.getString("difficulty")
+                );
+                
 
                 questions.add(question);
             }
@@ -78,67 +82,71 @@ public class QuestionDAO {
     // Add a new question
     public boolean addQuestion(Question question) {
 
-        String sql =
-                "INSERT INTO questions " +
-                "(quiz_id, question_text, option_a, option_b, " +
-                "option_c, option_d, correct_answer) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+    String sql =
+            "INSERT INTO questions " +
+            "(quiz_id, question_text, option_a, option_b, " +
+            "option_c, option_d, correct_answer, difficulty) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (
-                Connection connection =
-                        DBConnection.getConnection();
+    try (
+            Connection connection =
+                    DBConnection.getConnection();
 
-                PreparedStatement statement =
-                        connection.prepareStatement(sql)
-        ) {
+            PreparedStatement statement =
+                    connection.prepareStatement(sql)
+    ) {
 
-            statement.setInt(
-                    1,
-                    question.getQuizId()
-            );
+        statement.setInt(
+                1,
+                question.getQuizId()
+        );
 
-            statement.setString(
-                    2,
-                    question.getQuestionText()
-            );
+        statement.setString(
+                2,
+                question.getQuestionText()
+        );
 
-            statement.setString(
-                    3,
-                    question.getOptionA()
-            );
+        statement.setString(
+                3,
+                question.getOptionA()
+        );
 
-            statement.setString(
-                    4,
-                    question.getOptionB()
-            );
+        statement.setString(
+                4,
+                question.getOptionB()
+        );
 
-            statement.setString(
-                    5,
-                    question.getOptionC()
-            );
+        statement.setString(
+                5,
+                question.getOptionC()
+        );
 
-            statement.setString(
-                    6,
-                    question.getOptionD()
-            );
+        statement.setString(
+                6,
+                question.getOptionD()
+        );
 
-            statement.setString(
-                    7,
-                    question.getCorrectAnswer()
-            );
+        statement.setString(
+                7,
+                question.getCorrectAnswer()
+        );
 
-            int rows =
-                    statement.executeUpdate();
+        statement.setString(
+                8,
+                question.getDifficulty()
+        );
 
-            return rows > 0;
+        int rows =
+                statement.executeUpdate();
 
-        } catch (Exception e) {
+        return rows > 0;
 
-            e.printStackTrace();
-            return false;
-        }
+    } catch (Exception e) {
+
+        e.printStackTrace();
+        return false;
     }
-
+}
 
     // Get one question by ID
     public Question getQuestionById(int questionId) {
@@ -208,74 +216,78 @@ public class QuestionDAO {
 
 
     // Update a question
-    public boolean updateQuestion(Question question) {
+   public boolean updateQuestion(Question question) {
 
-        String sql =
-                "UPDATE questions SET " +
-                "question_text = ?, " +
-                "option_a = ?, " +
-                "option_b = ?, " +
-                "option_c = ?, " +
-                "option_d = ?, " +
-                "correct_answer = ? " +
-                "WHERE id = ?";
+    String sql =
+            "UPDATE questions SET " +
+            "question_text = ?, " +
+            "option_a = ?, " +
+            "option_b = ?, " +
+            "option_c = ?, " +
+            "option_d = ?, " +
+            "correct_answer = ?, " +
+            "difficulty = ? " +
+            "WHERE id = ?";
 
-        try (
-                Connection connection =
-                        DBConnection.getConnection();
+    try (
+            Connection connection =
+                    DBConnection.getConnection();
 
-                PreparedStatement statement =
-                        connection.prepareStatement(sql)
-        ) {
+            PreparedStatement statement =
+                    connection.prepareStatement(sql)
+    ) {
 
-            statement.setString(
-                    1,
-                    question.getQuestionText()
-            );
+        statement.setString(
+                1,
+                question.getQuestionText()
+        );
 
-            statement.setString(
-                    2,
-                    question.getOptionA()
-            );
+        statement.setString(
+                2,
+                question.getOptionA()
+        );
 
-            statement.setString(
-                    3,
-                    question.getOptionB()
-            );
+        statement.setString(
+                3,
+                question.getOptionB()
+        );
 
-            statement.setString(
-                    4,
-                    question.getOptionC()
-            );
+        statement.setString(
+                4,
+                question.getOptionC()
+        );
 
-            statement.setString(
-                    5,
-                    question.getOptionD()
-            );
+        statement.setString(
+                5,
+                question.getOptionD()
+        );
 
-            statement.setString(
-                    6,
-                    question.getCorrectAnswer()
-            );
+        statement.setString(
+                6,
+                question.getCorrectAnswer()
+        );
 
-            statement.setInt(
-                    7,
-                    question.getId()
-            );
+        statement.setString(
+                7,
+                question.getDifficulty()
+        );
 
-            int rows =
-                    statement.executeUpdate();
+        statement.setInt(
+                8,
+                question.getId()
+        );
 
-            return rows > 0;
+        int rows =
+                statement.executeUpdate();
 
-        } catch (Exception e) {
+        return rows > 0;
 
-            e.printStackTrace();
-            return false;
-        }
+    } catch (Exception e) {
+
+        e.printStackTrace();
+        return false;
     }
-
-
+}
     // Delete a question
     public boolean deleteQuestion(int questionId) {
 

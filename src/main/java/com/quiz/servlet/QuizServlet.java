@@ -42,17 +42,93 @@ public class QuizServlet extends HttpServlet {
         List<?> questionList =
                 (List<?>) questionsObject;
 
+        Object currentQuestionObject =
+                session.getAttribute("currentQuestion");
+
+        if (!(currentQuestionObject instanceof Integer)) {
+            response.sendRedirect("quiz-list");
+            return;
+        }
+
         int currentQuestion =
-                (Integer) session.getAttribute("currentQuestion");
+                (Integer) currentQuestionObject;
+
+        if (currentQuestion < 0) {
+            response.sendRedirect("quiz-list");
+            return;
+        }
 
         if (currentQuestion >= questionList.size()) {
+
+            session.removeAttribute("quizEndTime");
+            session.removeAttribute("remainingSeconds");
 
             response.sendRedirect("result");
             return;
         }
 
+        Long quizEndTime =
+                (Long) session.getAttribute("quizEndTime");
+
+        Long remainingSeconds =
+                (Long) session.getAttribute("remainingSeconds");
+
+        if (quizEndTime != null) {
+
+            long remainingMillis =
+                    quizEndTime - System.currentTimeMillis();
+
+            if (remainingMillis <= 0) {
+
+                session.removeAttribute("quizEndTime");
+                session.removeAttribute("remainingSeconds");
+
+                response.sendRedirect("timeout");
+                return;
+            }
+
+            remainingSeconds =
+                    (remainingMillis + 999) / 1000;
+
+        } else if (remainingSeconds != null) {
+
+            if (remainingSeconds <= 0) {
+
+                session.removeAttribute("remainingSeconds");
+
+                response.sendRedirect("timeout");
+                return;
+            }
+
+            long newEndTime =
+                    System.currentTimeMillis()
+                            + (remainingSeconds * 1000L);
+
+            session.setAttribute(
+                    "quizEndTime",
+                    newEndTime
+            );
+
+            session.removeAttribute(
+                    "remainingSeconds"
+            );
+
+        } else {
+
+            response.sendRedirect("quiz-list");
+            return;
+        }
+
+        Object questionObject =
+                questionList.get(currentQuestion);
+
+        if (!(questionObject instanceof Question)) {
+            response.sendRedirect("quiz-list");
+            return;
+        }
+
         Question question =
-                (Question) questionList.get(currentQuestion);
+                (Question) questionObject;
 
         request.setAttribute(
                 "question",
@@ -68,6 +144,17 @@ public class QuizServlet extends HttpServlet {
                 "totalQuestions",
                 questionList.size()
         );
+
+        request.setAttribute(
+                "timeRemaining",
+                remainingSeconds
+        );
+
+        session.removeAttribute(
+                "answerSubmitted"
+        );
+
+
 
         request.getRequestDispatcher(
                 "/quiz.jsp"

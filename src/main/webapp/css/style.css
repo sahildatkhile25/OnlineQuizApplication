@@ -470,5 +470,25 @@ button:hover {
 .retry-button:hover {
     background: #d97706;
 }
+.quiz-timer {
+    text-align: center;
+    margin: 15px 0;
+    padding: 12px;
+    background: #fff7ed;
+    color: #c2410c;
+    border: 1px solid #fed7aa;
+    border-radius: 10px;
+    font-weight: 700;
+}
 
+.difficulty-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 5px 0 15px;
+    background: #eef2ff;
+    color: #4338ca;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
 }

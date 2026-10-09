@@ -4,11 +4,31 @@
     Question question =
             (Question) request.getAttribute("question");
 
-    int questionNumber =
+    Integer questionNumber =
             (Integer) request.getAttribute("questionNumber");
 
-    int totalQuestions =
+    Integer totalQuestions =
             (Integer) request.getAttribute("totalQuestions");
+
+    Object timeRemainingObject =
+            request.getAttribute("timeRemaining");
+
+    long timeRemaining =
+            0;
+
+    if (timeRemainingObject instanceof Number) {
+
+        timeRemaining =
+                ((Number) timeRemainingObject).longValue();
+    }
+
+    if (question == null ||
+            questionNumber == null ||
+            totalQuestions == null) {
+
+        response.sendRedirect("quiz-list");
+        return;
+    }
 %>
 
 <!DOCTYPE html>
@@ -35,58 +55,63 @@
         <%= totalQuestions %>
     </h2>
 
+    <div class="quiz-timer">
+        Time Remaining:
+        <span id="timer"><%= timeRemaining %></span>
+        seconds
+    </div>
+
     <div class="quiz-question">
 
         <h3>
             <%= question.getQuestionText() %>
         </h3>
 
-        <form action="answer" method="post">
+        <% if (question.getDifficulty() != null &&
+                !question.getDifficulty().trim().isEmpty()) { %>
+
+            <p class="difficulty-badge">
+                Difficulty:
+                <%= question.getDifficulty() %>
+            </p>
+
+        <% } %>
+
+        <form action="answer"
+              method="post"
+              id="answerForm">
 
             <label>
-                <input
-                    type="radio"
-                    name="answer"
-                    value="A"
-                    required
-                >
+                <input type="radio"
+                       name="answer"
+                       value="A"
+                       required>
                 A. <%= question.getOptionA() %>
             </label>
 
-            <br>
-
             <label>
-                <input
-                    type="radio"
-                    name="answer"
-                    value="B"
-                >
+                <input type="radio"
+                       name="answer"
+                       value="B">
                 B. <%= question.getOptionB() %>
             </label>
 
-            <br>
-
             <label>
-                <input
-                    type="radio"
-                    name="answer"
-                    value="C"
-                >
+                <input type="radio"
+                       name="answer"
+                       value="C">
                 C. <%= question.getOptionC() %>
             </label>
 
-            <br>
-
             <label>
-                <input
-                    type="radio"
-                    name="answer"
-                    value="D"
-                >
+                <input type="radio"
+                       name="answer"
+                       value="D">
                 D. <%= question.getOptionD() %>
             </label>
 
-            <button type="submit">
+            <button type="submit"
+                    id="submitButton">
                 Submit Answer
             </button>
 
@@ -96,6 +121,46 @@
 
 </div>
 
+<script>
+    const timer = document.getElementById("timer");
+    const submitButton = document.getElementById("submitButton");
+
+    let timeRemaining =
+        parseInt(timer.textContent.trim(), 10);
+
+    if (isNaN(timeRemaining) || timeRemaining < 0) {
+        timeRemaining = 0;
+    }
+
+    function finishQuiz() {
+        timer.textContent = "0";
+
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
+
+        window.location.href = "timeout";
+    }
+
+    if (timeRemaining <= 0) {
+        finishQuiz();
+    } else {
+        const interval = setInterval(function () {
+
+            timeRemaining--;
+
+            if (timeRemaining <= 0) {
+
+                clearInterval(interval);
+                finishQuiz();
+                return;
+            }
+
+            timer.textContent = timeRemaining;
+
+        }, 1000);
+    }
+</script>
 </body>
 
 </html>

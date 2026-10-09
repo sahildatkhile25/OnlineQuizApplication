@@ -46,6 +46,18 @@ public class ResultServlet extends HttpServlet {
         int totalQuestions =
                 questions.size();
 
+        session.removeAttribute(
+                "quizEndTime"
+        );
+
+        session.removeAttribute(
+                "remainingSeconds"
+        );
+
+        session.removeAttribute(
+                "answerSubmitted"
+        );
+
         Boolean resultSaved =
                 (Boolean) session.getAttribute("resultSaved");
 
@@ -70,6 +82,7 @@ public class ResultServlet extends HttpServlet {
                 "resultSaved",
                 true
         );
+
     }
 }
 

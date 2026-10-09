@@ -116,6 +116,33 @@
 
         </select>
 
+        <label>
+    Difficulty
+</label>
+
+<select
+    name="difficulty"
+    required
+>
+
+    <option value="">
+        Select difficulty
+    </option>
+
+    <option value="Easy">
+        Easy
+    </option>
+
+    <option value="Medium">
+        Medium
+    </option>
+
+    <option value="Hard">
+        Hard
+    </option>
+
+</select>
+
 
         <button type="submit">
             Add Question

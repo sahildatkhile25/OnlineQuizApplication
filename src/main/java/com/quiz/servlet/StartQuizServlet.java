@@ -151,10 +151,37 @@ public class StartQuizServlet extends HttpServlet {
                 false
         );
 
+        // Give 30 seconds for each question.
+        long timerSeconds =
+                questions.size() * 30L;
+
+        long quizEndTime =
+                System.currentTimeMillis()
+                        + (timerSeconds * 1000L);
+
+        session.setAttribute(
+                "quizEndTime",
+                quizEndTime
+        );
+
+        // Clear old timer and feedback data from any
+        // previous quiz attempt.
+        session.removeAttribute(
+                "remainingSeconds"
+        );
+
+        session.removeAttribute(
+                "answerSubmitted"
+        );
+
 
         // Remove previous feedback
         session.removeAttribute(
                 "feedback"
+        );
+
+        session.removeAttribute(
+                "feedbackType"
         );
 
 

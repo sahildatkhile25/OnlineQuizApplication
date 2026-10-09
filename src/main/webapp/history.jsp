@@ -1,112 +1,95 @@
 <%@ page import="java.util.List" %>
 
-<!DOCTYPE html>
+    <!DOCTYPE html>
 
-<html>
+    <html>
 
-<head>
+    <head>
 
-    <title>Quiz History</title>
+        <title>Quiz History</title>
 
-    <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="css/style.css">
 
-</head>
+    </head>
 
-<body>
+    <body>
 
-<div class="dashboard-container">
+        <div class="dashboard-container">
 
-    <div class="top-bar">
+            <div class="top-bar">
 
-        <h1>Quiz History</h1>
+                <h1>Quiz History</h1>
 
-        <a href="quiz-list">Dashboard</a>
+                <a href="quiz-list">Dashboard</a>
 
-    </div>
+            </div>
 
-    <div class="welcome">
+            <div class="welcome">
 
-        <h2>
-            Previous Attempts
-        </h2>
+                <h2>
+                    Previous Attempts
+                </h2>
 
-    </div>
+            </div>
 
-    <%
-        List<String[]> results =
+            <% List<String[]> results =
                 (List<String[]>)
-                request.getAttribute("results");
+                    request.getAttribute("results");
 
-        if (results != null &&
-                !results.isEmpty()) {
-    %>
+                    if (results != null &&
+                    !results.isEmpty()) {
+                    %>
 
-    <table class="history-table">
+                    <table class="history-table">
 
-        <tr>
+                        <tr>
 
-            <th>Quiz</th>
+                            <th>Quiz</th>
 
-            <th>Score</th>
+                            <th>Score</th>
 
-            <th>Total</th>
+                            <th>Total</th>
 
-            <th>Date</th>
+                            <th>Date</th>
 
-        </tr>
+                        </tr>
 
-        <%
+                        <% for (String[] result : results) { %>
 
-            for (String[] result : results) {
+                            <tr>
 
-        %>
+                                <td>
+                                    <%= result[0] %>
+                                </td>
 
-        <tr>
+                                <td>
+                                    <%= result[1] %>
+                                </td>
 
-            <td>
-                <%= result[0] %>
-            </td>
+                                <td>
+                                    <%= result[2] %>
+                                </td>
 
-            <td>
-                <%= result[1] %>
-            </td>
+                                <td>
+                                    <%= result[3] %>
+                                </td>
 
-            <td>
-                <%= result[2] %>
-            </td>
+                            </tr>
 
-            <td>
-                <%= result[3] %>
-            </td>
+                            <% } %>
 
-        </tr>
+                    </table>
 
-        <%
+                    <% } else { %>
 
-            }
+                        <p>
+                            You have not attempted any quiz yet.
+                        </p>
 
-        %>
+                        <% } %>
 
-    </table>
+        </div>
 
-    <%
+    </body>
 
-        } else {
-
-    %>
-
-    <p>
-        You have not attempted any quiz yet.
-    </p>
-
-    <%
-
-        }
-
-    %>
-
-</div>
-
-</body>
-
-</html>
+    </html>

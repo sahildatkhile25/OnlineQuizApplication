@@ -13,8 +13,10 @@
 --   7. 100 questions (10 per quiz)
 --
 -- IMPORTANT:
--- This script is intended for a fresh project database.
--- Do not run it on a database containing important data.
+-- This script is intended for project setup and sample data.
+-- The sample quiz/question inserts use INSERT IGNORE so the
+-- same script can be run again without creating duplicate
+-- quizzes or duplicate questions.
 -- ============================================================
 
 
@@ -45,7 +47,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE TABLE IF NOT EXISTS quizzes (
     id INT PRIMARY KEY AUTO_INCREMENT,
-    title VARCHAR(100) NOT NULL,
+    title VARCHAR(100) UNIQUE NOT NULL,
     topic VARCHAR(100) NOT NULL
 );
 
@@ -63,7 +65,8 @@ CREATE TABLE IF NOT EXISTS questions (
     option_c VARCHAR(100) NOT NULL,
     option_d VARCHAR(100) NOT NULL,
     correct_answer CHAR(1) NOT NULL,
-
+    difficulty VARCHAR(20) NOT NULL DEFAULT 'Medium',
+    UNIQUE (quiz_id, question_text),
     FOREIGN KEY (quiz_id)
         REFERENCES quizzes(id)
         ON DELETE CASCADE
@@ -108,7 +111,7 @@ CREATE TABLE IF NOT EXISTS results (
 -- 6. INSERT 10 QUIZZES / TOPICS
 -- ============================================================
 
-INSERT INTO quizzes (title, topic)
+INSERT IGNORE INTO quizzes (title, topic)
 VALUES
 ('Java Programming', 'Java'),
 ('Python Programming', 'Python'),
@@ -126,501 +129,501 @@ VALUES
 -- 7. JAVA PROGRAMMING - 10 QUESTIONS
 -- ============================================================
 
-INSERT INTO questions
-(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer)
+INSERT IGNORE INTO questions
+(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer, difficulty)
 VALUES
 ((SELECT id FROM quizzes WHERE title='Java Programming'),
  'Which keyword is used to create a class in Java?',
- 'class', 'Class', 'new', 'object', 'A'),
+ 'class', 'Class', 'new', 'object', 'A', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='Java Programming'),
  'Which method is the starting point of a Java program?',
- 'start()', 'main()', 'run()', 'execute()', 'B'),
+ 'start()', 'main()', 'run()', 'execute()', 'B', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='Java Programming'),
  'Which data type is used to store whole numbers?',
- 'float', 'double', 'int', 'char', 'C'),
+ 'float', 'double', 'int', 'char', 'C', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='Java Programming'),
  'Which keyword is used to inherit a class?',
- 'implements', 'extends', 'inherits', 'super', 'B'),
+ 'implements', 'extends', 'inherits', 'super', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='Java Programming'),
  'Which symbol is used to end a Java statement?',
- '.', ':', ';', ',', 'C'),
+ '.', ':', ';', ',', 'C', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='Java Programming'),
  'Which concept allows the same method name with different parameters?',
- 'Inheritance', 'Encapsulation', 'Polymorphism', 'Abstraction', 'C'),
+ 'Inheritance', 'Encapsulation', 'Polymorphism', 'Abstraction', 'C', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='Java Programming'),
  'Which keyword is used to create an object?',
- 'class', 'object', 'new', 'create', 'C'),
+ 'class', 'object', 'new', 'create', 'C', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='Java Programming'),
  'Which keyword is used to prevent inheritance?',
- 'static', 'final', 'private', 'const', 'B'),
+ 'static', 'final', 'private', 'const', 'B', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='Java Programming'),
  'Which package contains the Scanner class?',
- 'java.io', 'java.util', 'java.lang', 'java.sql', 'B'),
+ 'java.io', 'java.util', 'java.lang', 'java.sql', 'B', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='Java Programming'),
  'Which operator is used for logical AND?',
- '&', '&&', '||', '!', 'B');
+ '&', '&&', '||', '!', 'B', 'Hard');
 
 
 -- ============================================================
 -- 8. PYTHON PROGRAMMING - 10 QUESTIONS
 -- ============================================================
 
-INSERT INTO questions
-(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer)
+INSERT IGNORE INTO questions
+(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer, difficulty)
 VALUES
 ((SELECT id FROM quizzes WHERE title='Python Programming'),
  'Which function is used to display output in Python?',
- 'display()', 'echo()', 'print()', 'show()', 'C'),
+ 'display()', 'echo()', 'print()', 'show()', 'C', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='Python Programming'),
  'Which symbol is used to write a comment in Python?',
- '//', '/*', '#', '--', 'C'),
+ '//', '/*', '#', '--', 'C', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='Python Programming'),
  'Which data type stores multiple values in an ordered collection?',
- 'list', 'int', 'bool', 'float', 'A'),
+ 'list', 'int', 'bool', 'float', 'A', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='Python Programming'),
  'Which keyword is used to define a function?',
- 'function', 'def', 'fun', 'define', 'B'),
+ 'function', 'def', 'fun', 'define', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='Python Programming'),
  'Which function returns the length of a list?',
- 'count()', 'length()', 'size()', 'len()', 'D'),
+ 'count()', 'length()', 'size()', 'len()', 'D', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='Python Programming'),
  'Which data type stores key-value pairs?',
- 'list', 'tuple', 'dictionary', 'set', 'C'),
+ 'list', 'tuple', 'dictionary', 'set', 'C', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='Python Programming'),
  'Which keyword is used for a conditional statement?',
- 'if', 'when', 'check', 'condition', 'A'),
+ 'if', 'when', 'check', 'condition', 'A', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='Python Programming'),
  'Which extension is commonly used for Python files?',
- '.java', '.py', '.python', '.pt', 'B'),
+ '.java', '.py', '.python', '.pt', 'B', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='Python Programming'),
  'Which keyword is used to create a loop over a sequence?',
- 'loop', 'repeat', 'for', 'iterate', 'C'),
+ 'loop', 'repeat', 'for', 'iterate', 'C', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='Python Programming'),
  'Which value represents a Boolean true value in Python?',
- 'true', 'TRUE', 'True', '1', 'C');
+ 'true', 'TRUE', 'True', '1', 'C', 'Hard');
 
 
 -- ============================================================
 -- 9. SQL BASICS - 10 QUESTIONS
 -- ============================================================
 
-INSERT INTO questions
-(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer)
+INSERT IGNORE INTO questions
+(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer, difficulty)
 VALUES
 ((SELECT id FROM quizzes WHERE title='SQL Basics'),
  'Which command is used to retrieve data from a table?',
- 'GET', 'SELECT', 'FETCH', 'READ', 'B'),
+ 'GET', 'SELECT', 'FETCH', 'READ', 'B', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='SQL Basics'),
  'Which command is used to add new records?',
- 'ADD', 'INSERT', 'CREATE', 'PUT', 'B'),
+ 'ADD', 'INSERT', 'CREATE', 'PUT', 'B', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='SQL Basics'),
  'Which command is used to modify existing records?',
- 'CHANGE', 'MODIFY', 'UPDATE', 'ALTER', 'C'),
+ 'CHANGE', 'MODIFY', 'UPDATE', 'ALTER', 'C', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='SQL Basics'),
  'Which command removes records from a table?',
- 'REMOVE', 'DELETE', 'DROP', 'CLEAR', 'B'),
+ 'REMOVE', 'DELETE', 'DROP', 'CLEAR', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='SQL Basics'),
  'Which clause is used to filter records?',
- 'WHERE', 'FILTER', 'HAVING', 'SEARCH', 'A'),
+ 'WHERE', 'FILTER', 'HAVING', 'SEARCH', 'A', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='SQL Basics'),
  'Which keyword is used to sort query results?',
- 'SORT', 'ORDER BY', 'GROUP BY', 'ARRANGE', 'B'),
+ 'SORT', 'ORDER BY', 'GROUP BY', 'ARRANGE', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='SQL Basics'),
  'Which function returns the number of rows?',
- 'SUM()', 'COUNT()', 'TOTAL()', 'NUMBER()', 'B'),
+ 'SUM()', 'COUNT()', 'TOTAL()', 'NUMBER()', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='SQL Basics'),
  'Which command creates a new table?',
- 'MAKE TABLE', 'NEW TABLE', 'CREATE TABLE', 'ADD TABLE', 'C'),
+ 'MAKE TABLE', 'NEW TABLE', 'CREATE TABLE', 'ADD TABLE', 'C', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='SQL Basics'),
  'Which keyword removes duplicate results?',
- 'UNIQUE', 'DISTINCT', 'REMOVE', 'DIFFERENT', 'B'),
+ 'UNIQUE', 'DISTINCT', 'REMOVE', 'DIFFERENT', 'B', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='SQL Basics'),
  'Which symbol is used for all columns in SELECT?',
- '#', '*', '%', '&', 'B');
+ '#', '*', '%', '&', 'B', 'Hard');
 
 
 -- ============================================================
 -- 10. HTML BASICS - 10 QUESTIONS
 -- ============================================================
 
-INSERT INTO questions
-(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer)
+INSERT IGNORE INTO questions
+(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer, difficulty)
 VALUES
 ((SELECT id FROM quizzes WHERE title='HTML Basics'),
  'What does HTML stand for?',
  'Hyper Text Markup Language',
  'High Text Machine Language',
  'Hyperlink Text Management Language',
- 'Home Tool Markup Language', 'A'),
+ 'Home Tool Markup Language', 'A', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='HTML Basics'),
  'Which tag is used for the largest heading?',
- '<h6>', '<head>', '<h1>', '<heading>', 'C'),
+ '<h6>', '<head>', '<h1>', '<heading>', 'C', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='HTML Basics'),
  'Which tag is used to create a paragraph?',
- '<para>', '<p>', '<paragraph>', '<text>', 'B'),
+ '<para>', '<p>', '<paragraph>', '<text>', 'B', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='HTML Basics'),
  'Which tag creates a hyperlink?',
- '<link>', '<a>', '<href>', '<url>', 'B'),
+ '<link>', '<a>', '<href>', '<url>', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='HTML Basics'),
  'Which tag is used to display an image?',
- '<image>', '<img>', '<picture>', '<src>', 'B'),
+ '<image>', '<img>', '<picture>', '<src>', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='HTML Basics'),
  'Which attribute specifies an image source?',
- 'href', 'src', 'link', 'path', 'B'),
+ 'href', 'src', 'link', 'path', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='HTML Basics'),
  'Which tag creates an unordered list?',
- '<ol>', '<ul>', '<list>', '<li>', 'B'),
+ '<ol>', '<ul>', '<list>', '<li>', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='HTML Basics'),
  'Which tag creates a table row?',
- '<td>', '<tr>', '<row>', '<table-row>', 'B'),
+ '<td>', '<tr>', '<row>', '<table-row>', 'B', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='HTML Basics'),
  'Which tag is used to create a form?',
- '<input>', '<form>', '<data>', '<field>', 'B'),
+ '<input>', '<form>', '<data>', '<field>', 'B', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='HTML Basics'),
  'Which tag is used for a line break?',
- '<break>', '<lb>', '<br>', '<line>', 'C');
+ '<break>', '<lb>', '<br>', '<line>', 'C', 'Hard');
 
 
 -- ============================================================
 -- 11. CSS BASICS - 10 QUESTIONS
 -- ============================================================
 
-INSERT INTO questions
-(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer)
+INSERT IGNORE INTO questions
+(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer, difficulty)
 VALUES
 ((SELECT id FROM quizzes WHERE title='CSS Basics'),
  'What does CSS stand for?',
  'Computer Style Sheets',
  'Cascading Style Sheets',
  'Creative Style System',
- 'Colorful Style Sheets', 'B'),
+ 'Colorful Style Sheets', 'B', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='CSS Basics'),
  'Which property changes text color?',
- 'font-color', 'text-color', 'color', 'foreground', 'C'),
+ 'font-color', 'text-color', 'color', 'foreground', 'C', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='CSS Basics'),
  'Which property changes the background color?',
- 'background-color', 'bgcolor', 'background', 'color-background', 'A'),
+ 'background-color', 'bgcolor', 'background', 'color-background', 'A', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='CSS Basics'),
  'Which symbol represents a class selector?',
- '#', '.', '*', '@', 'B'),
+ '#', '.', '*', '@', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='CSS Basics'),
  'Which symbol represents an ID selector?',
- '.', '#', '*', '&', 'B'),
+ '.', '#', '*', '&', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='CSS Basics'),
  'Which property changes text size?',
- 'text-size', 'font-size', 'size', 'font-height', 'B'),
+ 'text-size', 'font-size', 'size', 'font-height', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='CSS Basics'),
  'Which property makes text bold?',
- 'font-weight', 'text-bold', 'font-style', 'bold', 'A'),
+ 'font-weight', 'text-bold', 'font-style', 'bold', 'A', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='CSS Basics'),
  'Which property controls the space inside an element?',
- 'margin', 'padding', 'spacing', 'border', 'B'),
+ 'margin', 'padding', 'spacing', 'border', 'B', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='CSS Basics'),
  'Which property controls the space outside an element?',
- 'padding', 'margin', 'space', 'outside', 'B'),
+ 'padding', 'margin', 'space', 'outside', 'B', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='CSS Basics'),
  'Which CSS layout system is useful for one-dimensional layouts?',
- 'Grid', 'Flexbox', 'Table', 'Float', 'B');
+ 'Grid', 'Flexbox', 'Table', 'Float', 'B', 'Hard');
 
 
 -- ============================================================
 -- 12. JAVASCRIPT BASICS - 10 QUESTIONS
 -- ============================================================
 
-INSERT INTO questions
-(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer)
+INSERT IGNORE INTO questions
+(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer, difficulty)
 VALUES
 ((SELECT id FROM quizzes WHERE title='JavaScript Basics'),
  'Which keyword declares a variable in JavaScript?',
- 'var', 'variable', 'declare', 'letvar', 'A'),
+ 'var', 'variable', 'declare', 'letvar', 'A', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='JavaScript Basics'),
  'Which keyword can declare a block-scoped variable?',
- 'var', 'let', 'define', 'variable', 'B'),
+ 'var', 'let', 'define', 'variable', 'B', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='JavaScript Basics'),
  'Which keyword declares a constant?',
- 'constant', 'const', 'fixed', 'final', 'B'),
+ 'constant', 'const', 'fixed', 'final', 'B', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='JavaScript Basics'),
  'Which method displays a message in the browser console?',
- 'console.log()', 'print()', 'display()', 'log.console()', 'A'),
+ 'console.log()', 'print()', 'display()', 'log.console()', 'A', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='JavaScript Basics'),
  'Which symbol is used for strict equality?',
- '=', '==', '===', '!=', 'C'),
+ '=', '==', '===', '!=', 'C', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='JavaScript Basics'),
  'Which method adds an element to the end of an array?',
- 'add()', 'push()', 'append()', 'insert()', 'B'),
+ 'add()', 'push()', 'append()', 'insert()', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='JavaScript Basics'),
  'Which keyword defines a function?',
- 'function', 'def', 'func', 'method', 'A'),
+ 'function', 'def', 'func', 'method', 'A', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='JavaScript Basics'),
  'Which object represents the web page?',
- 'window', 'document', 'browser', 'page', 'B'),
+ 'window', 'document', 'browser', 'page', 'B', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='JavaScript Basics'),
  'Which event occurs when a button is clicked?',
- 'onpress', 'onclick', 'onbutton', 'clickbutton', 'B'),
+ 'onpress', 'onclick', 'onbutton', 'clickbutton', 'B', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='JavaScript Basics'),
  'Which value represents absence of a value?',
- 'empty', 'null', 'none', 'voidvalue', 'B');
+ 'empty', 'null', 'none', 'voidvalue', 'B', 'Hard');
 
 
 -- ============================================================
 -- 13. C PROGRAMMING - 10 QUESTIONS
 -- ============================================================
 
-INSERT INTO questions
-(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer)
+INSERT IGNORE INTO questions
+(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer, difficulty)
 VALUES
 ((SELECT id FROM quizzes WHERE title='C Programming'),
  'Which function is the starting point of a C program?',
- 'start()', 'main()', 'run()', 'begin()', 'B'),
+ 'start()', 'main()', 'run()', 'begin()', 'B', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='C Programming'),
  'Which header file is used for printf()?',
- '<string.h>', '<stdio.h>', '<math.h>', '<stdlib.h>', 'B'),
+ '<string.h>', '<stdio.h>', '<math.h>', '<stdlib.h>', 'B', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='C Programming'),
  'Which symbol ends a C statement?',
- ':', '.', ';', ',', 'C'),
+ ':', '.', ';', ',', 'C', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='C Programming'),
  'Which data type stores integers?',
- 'float', 'char', 'int', 'double', 'C'),
+ 'float', 'char', 'int', 'double', 'C', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='C Programming'),
  'Which operator is used to get the address of a variable?',
- '*', '&', '#', '@', 'B'),
+ '*', '&', '#', '@', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='C Programming'),
  'Which loop executes at least once?',
- 'for', 'while', 'do-while', 'foreach', 'C'),
+ 'for', 'while', 'do-while', 'foreach', 'C', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='C Programming'),
  'Which symbol is used for a single-line comment?',
- '/*', '//', '#', '--', 'B'),
+ '/*', '//', '#', '--', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='C Programming'),
  'Which function is used to read formatted input?',
- 'printf()', 'scanf()', 'input()', 'read()', 'B'),
+ 'printf()', 'scanf()', 'input()', 'read()', 'B', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='C Programming'),
  'Which data type stores a single character?',
- 'string', 'char', 'character', 'text', 'B'),
+ 'string', 'char', 'character', 'text', 'B', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='C Programming'),
  'Which keyword is used to return a value from a function?',
- 'send', 'return', 'output', 'give', 'B');
+ 'send', 'return', 'output', 'give', 'B', 'Hard');
 
 
 -- ============================================================
 -- 14. C++ PROGRAMMING - 10 QUESTIONS
 -- ============================================================
 
-INSERT INTO questions
-(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer)
+INSERT IGNORE INTO questions
+(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer, difficulty)
 VALUES
 ((SELECT id FROM quizzes WHERE title='C++ Programming'),
  'Which extension is commonly used for C++ source files?',
- '.java', '.cpp', '.py', '.html', 'B'),
+ '.java', '.cpp', '.py', '.html', 'B', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='C++ Programming'),
  'Which keyword creates a class?',
- 'class', 'Class', 'structclass', 'object', 'A'),
+ 'class', 'Class', 'structclass', 'object', 'A', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='C++ Programming'),
  'Which operator is used with cout?',
- '>>', '<<', '=>', '<=', 'B'),
+ '>>', '<<', '=>', '<=', 'B', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='C++ Programming'),
  'Which object is commonly used for output?',
- 'cin', 'cout', 'print', 'output', 'B'),
+ 'cin', 'cout', 'print', 'output', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='C++ Programming'),
  'Which object is commonly used for input?',
- 'cin', 'cout', 'input', 'scan', 'A'),
+ 'cin', 'cout', 'input', 'scan', 'A', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='C++ Programming'),
  'Which concept allows multiple forms?',
- 'Inheritance', 'Polymorphism', 'Compilation', 'Looping', 'B'),
+ 'Inheritance', 'Polymorphism', 'Compilation', 'Looping', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='C++ Programming'),
  'Which symbol is used for scope resolution?',
- '.', '::', '->', ':', 'B'),
+ '.', '::', '->', ':', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='C++ Programming'),
  'Which keyword is used to create an object dynamically?',
- 'malloc', 'new', 'create', 'object', 'B'),
+ 'malloc', 'new', 'create', 'object', 'B', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='C++ Programming'),
  'Which feature allows a class to inherit another class?',
- 'Inheritance', 'Encapsulation', 'Overloading', 'Casting', 'A'),
+ 'Inheritance', 'Encapsulation', 'Overloading', 'Casting', 'A', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='C++ Programming'),
  'Which header is commonly used for cout and cin?',
- '<stdio.h>', '<iostream>', '<input.h>', '<stream.h>', 'B');
+ '<stdio.h>', '<iostream>', '<input.h>', '<stream.h>', 'B', 'Hard');
 
 
 -- ============================================================
 -- 15. DBMS BASICS - 10 QUESTIONS
 -- ============================================================
 
-INSERT INTO questions
-(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer)
+INSERT IGNORE INTO questions
+(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer, difficulty)
 VALUES
 ((SELECT id FROM quizzes WHERE title='DBMS Basics'),
  'What does DBMS stand for?',
  'Database Management System',
  'Data Backup Management System',
  'Database Machine System',
- 'Data Management Software', 'A'),
+ 'Data Management Software', 'A', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='DBMS Basics'),
  'Which key uniquely identifies a record?',
- 'Foreign Key', 'Primary Key', 'Candidate Key', 'Normal Key', 'B'),
+ 'Foreign Key', 'Primary Key', 'Candidate Key', 'Normal Key', 'B', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='DBMS Basics'),
  'Which key connects two tables?',
- 'Primary Key', 'Foreign Key', 'Super Key', 'Unique Key', 'B'),
+ 'Primary Key', 'Foreign Key', 'Super Key', 'Unique Key', 'B', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='DBMS Basics'),
  'Which command is used to retrieve data?',
- 'INSERT', 'SELECT', 'UPDATE', 'DELETE', 'B'),
+ 'INSERT', 'SELECT', 'UPDATE', 'DELETE', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='DBMS Basics'),
  'What is normalization used for?',
  'Increasing duplication',
  'Reducing data redundancy',
  'Deleting tables',
- 'Increasing storage', 'B'),
+ 'Increasing storage', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='DBMS Basics'),
  'Which relationship connects one record to many records?',
- 'One-to-one', 'One-to-many', 'Many-to-one only', 'None', 'B'),
+ 'One-to-one', 'One-to-many', 'Many-to-one only', 'None', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='DBMS Basics'),
  'Which constraint prevents NULL values?',
- 'UNIQUE', 'NOT NULL', 'CHECK', 'DEFAULT', 'B'),
+ 'UNIQUE', 'NOT NULL', 'CHECK', 'DEFAULT', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='DBMS Basics'),
  'Which constraint ensures unique values?',
- 'UNIQUE', 'CHECK', 'DEFAULT', 'NULL', 'A'),
+ 'UNIQUE', 'CHECK', 'DEFAULT', 'NULL', 'A', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='DBMS Basics'),
  'Which SQL command removes a table?',
- 'DELETE', 'REMOVE', 'DROP', 'CLEAR', 'C'),
+ 'DELETE', 'REMOVE', 'DROP', 'CLEAR', 'C', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='DBMS Basics'),
  'Which database object stores data in rows and columns?',
- 'Table', 'Query', 'View only', 'Index', 'A');
+ 'Table', 'Query', 'View only', 'Index', 'A', 'Hard');
 
 
 -- ============================================================
 -- 16. COMPUTER NETWORKS - 10 QUESTIONS
 -- ============================================================
 
-INSERT INTO questions
-(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer)
+INSERT IGNORE INTO questions
+(quiz_id, question_text, option_a, option_b, option_c, option_d, correct_answer, difficulty)
 VALUES
 ((SELECT id FROM quizzes WHERE title='Computer Networks'),
  'What does LAN stand for?',
  'Local Area Network',
  'Large Area Network',
  'Long Area Network',
- 'Local Access Node', 'A'),
+ 'Local Access Node', 'A', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='Computer Networks'),
  'What does WAN stand for?',
  'Wide Area Network',
  'Wireless Area Network',
  'Web Area Network',
- 'World Access Network', 'A'),
+ 'World Access Network', 'A', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='Computer Networks'),
  'Which device connects different networks?',
- 'Switch', 'Router', 'Hub', 'Repeater', 'B'),
+ 'Switch', 'Router', 'Hub', 'Repeater', 'B', 'Easy'),
 
 ((SELECT id FROM quizzes WHERE title='Computer Networks'),
  'Which protocol is used for web pages?',
- 'FTP', 'HTTP', 'SMTP', 'SSH', 'B'),
+ 'FTP', 'HTTP', 'SMTP', 'SSH', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='Computer Networks'),
  'Which protocol is commonly used to send email?',
- 'SMTP', 'HTTP', 'FTP', 'DNS', 'A'),
+ 'SMTP', 'HTTP', 'FTP', 'DNS', 'A', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='Computer Networks'),
  'What does IP stand for?',
  'Internet Protocol',
  'Internal Process',
  'Internet Process',
- 'Input Protocol', 'A'),
+ 'Input Protocol', 'A', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='Computer Networks'),
  'Which device forwards data within a local network?',
- 'Router', 'Switch', 'Modem', 'Firewall', 'B'),
+ 'Router', 'Switch', 'Modem', 'Firewall', 'B', 'Medium'),
 
 ((SELECT id FROM quizzes WHERE title='Computer Networks'),
  'Which protocol converts domain names into IP addresses?',
- 'HTTP', 'DNS', 'FTP', 'TCP', 'B'),
+ 'HTTP', 'DNS', 'FTP', 'TCP', 'B', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='Computer Networks'),
  'Which protocol provides reliable data transmission?',
- 'UDP', 'TCP', 'IP', 'HTTP', 'B'),
+ 'UDP', 'TCP', 'IP', 'HTTP', 'B', 'Hard'),
 
 ((SELECT id FROM quizzes WHERE title='Computer Networks'),
  'Which device is used to connect a computer to the internet?',
- 'Keyboard', 'Modem', 'Monitor', 'Printer', 'B');
+ 'Keyboard', 'Modem', 'Monitor', 'Printer', 'B', 'Hard');
 
 
 -- ============================================================

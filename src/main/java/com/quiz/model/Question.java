@@ -10,6 +10,7 @@ public class Question {
     private String optionC;
     private String optionD;
     private String correctAnswer;
+    private String difficulty;
 
     public Question() {
     }
@@ -77,4 +78,10 @@ public class Question {
     public void setCorrectAnswer(String correctAnswer) {
         this.correctAnswer = correctAnswer;
     }
+    public String getDifficulty() {
+    return difficulty;
+}
+public void setDifficulty(String difficulty) {
+    this.difficulty = difficulty;
+}
 }

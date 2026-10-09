@@ -146,6 +146,44 @@
 
         </select>
 
+        <label>
+    Difficulty
+</label>
+
+<select
+    name="difficulty"
+    required
+>
+
+    <option
+        value="Easy"
+        <%= "Easy".equals(question.getDifficulty())
+            ? "selected"
+            : "" %>
+    >
+        Easy
+    </option>
+
+    <option
+        value="Medium"
+        <%= "Medium".equals(question.getDifficulty())
+            ? "selected"
+            : "" %>
+    >
+        Medium
+    </option>
+
+    <option
+        value="Hard"
+        <%= "Hard".equals(question.getDifficulty())
+            ? "selected"
+            : "" %>
+    >
+        Hard
+    </option>
+
+</select>
+
 
         <button type="submit">
             Update Question
